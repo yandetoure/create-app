@@ -16,6 +16,8 @@
 </head>
 
 <body class="bg-[#020617] text-white overflow-x-hidden">
+    <div style="background: red; color: white; padding: 10px; text-align: center; font-weight: bold;">SI VOUS VOYEZ CE
+        MESSAGE, LA PAGE FONCTIONNE</div>
 
     <!-- Header -->
     <nav

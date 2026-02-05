@@ -29,8 +29,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
+            RoleSeeder::class,
             CategorySeeder::class,
             FeatureSeeder::class,
         ]);
+
+        User::where('email', 'admin@example.com')->first()?->assignRole('developer');
+        User::where('email', 'client@example.com')->first()?->assignRole('client');
     }
 }
