@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ProjectType;
 use App\Models\Category;
+use App\Models\Feature;
 use Illuminate\Http\Request;
 
 class ProjectTypeController extends Controller
@@ -34,14 +35,15 @@ class ProjectTypeController extends Controller
 
     public function show(ProjectType $projectType)
     {
-        $projectType->load('category');
+        $projectType->load(['category', 'features']);
         return view('admin.project-types.show', compact('projectType'));
     }
 
     public function edit(ProjectType $projectType)
     {
         $categories = Category::all();
-        return view('admin.project-types.edit', compact('projectType', 'categories'));
+        $features = Feature::all();
+        return view('admin.project-types.edit', compact('projectType', 'categories', 'features'));
     }
 
     public function update(Request $request, ProjectType $projectType)
@@ -53,7 +55,14 @@ class ProjectTypeController extends Controller
         ]);
 
         $projectType->update($data);
-        return redirect()->back()->with('success', 'Type mis à jour.');
+
+        if ($request->has('features')) {
+            $projectType->features()->sync($request->input('features'));
+        } else {
+            $projectType->features()->detach();
+        }
+
+        return redirect()->back()->with('success', 'Type mis à jour avec ses fonctionnalités.');
     }
 
     public function destroy(ProjectType $projectType)

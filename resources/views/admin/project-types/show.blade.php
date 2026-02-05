@@ -15,7 +15,8 @@
                     <div>
                         <h3 class="text-3xl font-black tracking-tighter">{{ $projectType->name }}</h3>
                         <p class="text-gray-500 font-bold uppercase text-[10px] tracking-[0.4em]">
-                            {{ $projectType->category->name }}</p>
+                            {{ $projectType->category->name }}
+                        </p>
                     </div>
                 </div>
                 <div class="flex space-x-3">
@@ -56,19 +57,37 @@
 
                 <div class="space-y-8">
                     <div class="p-8 bg-white/[0.02] border border-white/5 rounded-3xl h-full">
-                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-4">Moteur de
-                            Configuration</p>
-                        <ul class="space-y-4">
-                            <li class="flex items-center space-x-3">
-                                <div class="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>
-                                <span class="text-xs font-bold text-gray-400">Slug Technique:</span>
-                                <span
-                                    class="text-xs font-mono text-indigo-400 underline">{{ $projectType->slug }}</span>
-                            </li>
-                            <li class="flex items-center space-x-3 text-xs text-gray-500 italic">
-                                * Ce type de projet sert de base au calcul dynamique du configurateur.
-                            </li>
-                        </ul>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-4">Fonctionnalités
+                            Incluses</p>
+                        @if($projectType->features->isEmpty())
+                            <p class="text-xs text-gray-500 italic">Aucune fonctionnalité de base liée.</p>
+                        @else
+                            <div class="grid grid-cols-1 gap-2">
+                                @foreach($projectType->features as $f)
+                                    <div class="flex items-center space-x-2 text-indigo-300">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        <span class="text-xs font-bold">{{ $f->name }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        <div class="mt-8 pt-6 border-t border-white/5">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-4">Moteur de
+                                Configuration</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-center space-x-3">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>
+                                    <span class="text-xs font-bold text-gray-400">Slug Technique:</span>
+                                    <span
+                                        class="text-xs font-mono text-indigo-400 underline">{{ $projectType->slug }}</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -22,4 +22,9 @@ class Feature extends Model
     {
         return $this->belongsToMany(Project::class);
     }
+
+    public function projectTypes()
+    {
+        return $this->belongsToMany(ProjectType::class, 'feature_project_type')->withTimestamps();
+    }
 }

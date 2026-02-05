@@ -39,82 +39,86 @@
                         <tbody class="divide-y divide-white/5">
                             @foreach($paidFeatures as $feature)
                                 <tr class="hover:bg-white/[0.03] transition relative group">
-                                    <form action="{{ route('admin.features.update', $feature) }}" method="POST"
-                                        class="inline">
-                                        @csrf
-                                        @method('PUT')
-                                        <td class="px-8 py-6">
-                                            <div class="font-bold text-white">{{ $feature->name }}</div>
-                                            <div class="text-[10px] text-gray-500 italic truncate max-w-[200px]">
-                                                {{ $feature->description }}</div>
-                                        </td>
-                                        <td class="px-8 py-6">
-                                            <span
-                                                class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400">{{ $feature->category->name }}</span>
-                                        </td>
-                                        <td class="px-8 py-6">
-                                            <div class="flex items-center space-x-2">
-                                                <input type="number" name="base_price" value="{{ (int) $feature->price }}"
-                                                    class="bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-sm font-black w-32 focus:border-indigo-500 outline-none">
-                                                <span class="text-gray-500 font-bold text-xs uppercase">FCFA</span>
-                                            </div>
-                                        </td>
-                                        <td class="px-8 py-6">
-                                            <input type="number" name="base_duration" value="{{ $feature->impact_days }}"
-                                                class="bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-sm font-black w-20 focus:border-indigo-500 outline-none text-center">
-                                        </td>
-                                        <td class="px-8 py-6 text-right flex items-center justify-end space-x-2">
-                                            <button type="submit" title="Sauvegarder"
-                                                class="p-3 bg-green-500/10 text-green-400 rounded-xl hover:bg-green-500 hover:text-white transition">
+                                    <td class="px-8 py-6">
+                                        <div class="font-bold text-white">{{ $feature->name }}</div>
+                                        <div class="text-[10px] text-gray-500 italic truncate max-w-[200px]">
+                                            {{ $feature->description }}
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-6">
+                                        <span
+                                            class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400">{{ $feature->category->name }}</span>
+                                    </td>
+                                    <td class="px-8 py-6">
+                                        <div class="flex items-center space-x-2">
+                                            <form id="update-feature-{{ $feature->id }}"
+                                                action="{{ route('admin.features.update', $feature) }}" method="POST"
+                                                class="hidden">
+                                                @csrf
+                                                @method('PUT')
+                                            </form>
+                                            <input type="number" name="base_price" form="update-feature-{{ $feature->id }}"
+                                                value="{{ (int) $feature->price }}"
+                                                class="bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-sm font-black w-32 focus:border-indigo-500 outline-none">
+                                            <span class="text-gray-500 font-bold text-xs uppercase">FCFA</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-6">
+                                        <input type="number" name="base_duration" form="update-feature-{{ $feature->id }}"
+                                            value="{{ $feature->impact_days }}"
+                                            class="bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-sm font-black w-20 focus:border-indigo-500 outline-none text-center">
+                                    </td>
+                                    <td class="px-8 py-6 text-right flex items-center justify-end space-x-2">
+                                        <button type="submit" form="update-feature-{{ $feature->id }}" title="Sauvegarder"
+                                            class="p-3 bg-green-500/10 text-green-400 rounded-xl hover:bg-green-500 hover:text-white transition">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </button>
+
+                                        <form action="{{ route('admin.features.toggle-base', $feature) }}" method="POST"
+                                            class="inline">
+                                            @csrf
+                                            <button type="submit" title="Basculer vers les modules inclus"
+                                                class="p-3 bg-white/5 text-gray-400 rounded-xl hover:bg-indigo-600 hover:text-white transition">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M5 13l4 4L19 7" />
+                                                        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-6.857 2.286L12 21l-2.286-6.857L3 12l6.857-2.286L12 3z" />
                                                 </svg>
                                             </button>
-                                    </form>
+                                        </form>
 
-                                    <form action="{{ route('admin.features.toggle-base', $feature) }}" method="POST"
-                                        class="inline">
-                                        @csrf
-                                        <button type="submit" title="Basculer vers les modules inclus"
+                                        <a href="{{ route('admin.features.show', $feature) }}" title="Voir les détails"
+                                            class="p-3 bg-white/5 text-gray-400 rounded-xl hover:bg-white/10 hover:text-white transition">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                        </a>
+
+                                        <a href="{{ route('admin.features.edit', $feature) }}" title="Modifier"
                                             class="p-3 bg-white/5 text-gray-400 rounded-xl hover:bg-indigo-600 hover:text-white transition">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-6.857 2.286L12 21l-2.286-6.857L3 12l6.857-2.286L12 3z" />
+                                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                             </svg>
-                                        </button>
-                                    </form>
+                                        </a>
 
-                                    <a href="{{ route('admin.features.show', $feature) }}" title="Voir les détails"
-                                        class="p-3 bg-white/5 text-gray-400 rounded-xl hover:bg-white/10 hover:text-white transition">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                    </a>
-
-                                    <a href="{{ route('admin.features.edit', $feature) }}" title="Modifier"
-                                        class="p-3 bg-white/5 text-gray-400 rounded-xl hover:bg-indigo-600 hover:text-white transition">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                        </svg>
-                                    </a>
-
-                                    <form action="{{ route('admin.features.destroy', $feature) }}" method="POST"
-                                        class="inline" onsubmit="return confirm('Supprimer ce module ?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="p-3 bg-red-500/10 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </button>
-                                    </form>
+                                        <form action="{{ route('admin.features.destroy', $feature) }}" method="POST"
+                                            class="inline" onsubmit="return confirm('Supprimer ce module ?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="p-3 bg-red-500/10 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -157,7 +161,8 @@
                                     <td class="px-8 py-6">
                                         <div class="font-bold text-indigo-300">{{ $feature->name }}</div>
                                         <div class="text-[10px] text-gray-500 italic truncate max-w-[300px]">
-                                            {{ $feature->description }}</div>
+                                            {{ $feature->description }}
+                                        </div>
                                     </td>
                                     <td class="px-8 py-6">
                                         <span

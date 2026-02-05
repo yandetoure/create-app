@@ -36,16 +36,24 @@
                         </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Catégorie
-                            parente</label>
-                        <select name="category_id"
-                            class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:border-indigo-500 transition outline-none appearance-none">
-                            @foreach($categories as $cat)
-                                <option value="{{ $cat->id }}" {{ $projectType->category_id == $cat->id ? 'selected' : '' }}
-                                    class="bg-gray-900">{{ $cat->name }}</option>
-                            @endforeach
                         </select>
+                    </div>
+
+                    <div class="space-y-4 pt-6 border-t border-white/5">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-indigo-400">Fonctionnalités Incluses (Base)</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            @foreach($features->where('is_base', true) as $f)
+                                <div class="flex items-center space-x-3 bg-white/5 p-4 rounded-2xl hover:bg-white/10 transition group cursor-pointer">
+                                    <input type="checkbox" name="features[]" value="{{ $f->id }}" id="feat_{{ $f->id }}"
+                                        {{ $projectType->features->contains($f->id) ? 'checked' : '' }}
+                                        class="w-5 h-5 rounded border-white/10 bg-transparent text-indigo-600 focus:ring-indigo-500 transition">
+                                    <label for="feat_{{ $f->id }}" class="flex flex-col cursor-pointer">
+                                        <span class="text-xs font-bold text-white group-hover:text-indigo-300 transition">{{ $f->name }}</span>
+                                        <span class="text-[9px] text-gray-500 italic">{{ Str::limit($f->description, 40) }}</span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 

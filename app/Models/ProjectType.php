@@ -17,4 +17,9 @@ class ProjectType extends Model
     {
         return $this->hasMany(Project::class);
     }
+
+    public function features()
+    {
+        return $this->belongsToMany(Feature::class, 'feature_project_type')->withTimestamps();
+    }
 }
