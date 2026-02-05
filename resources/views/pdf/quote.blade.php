@@ -130,20 +130,21 @@
                     Secteur : {{ $project->projectType->category->name }}
                 </td>
                 <td style="text-align: right;">{{ $project->projectType->base_duration_days }}</td>
-                <td style="text-align: right;">{{ number_format($project->projectType->base_price, 2) }} €</td>
+                <td style="text-align: right;">{{ number_format($project->projectType->base_price, 0, ',', ' ') }} FCFA
+                </td>
             </tr>
             @foreach($project->features as $feature)
                 <tr>
                     <td>{{ $feature->name }}</td>
                     <td style="text-align: right;">+{{ $feature->impact_days }}</td>
-                    <td style="text-align: right;">+{{ number_format($feature->price, 2) }} €</td>
+                    <td style="text-align: right;">+{{ number_format($feature->price, 0, ',', ' ') }} FCFA</td>
                 </tr>
             @endforeach
             @foreach($project->platforms as $platform)
                 <tr>
                     <td>Option Multi-plateforme ({{ ucfirst($platform->platform_type) }})</td>
                     <td style="text-align: right;">+{{ $platform->additional_duration }}</td>
-                    <td style="text-align: right;">+{{ number_format($platform->additional_price, 2) }} €</td>
+                    <td style="text-align: right;">+{{ number_format($platform->additional_price, 0, ',', ' ') }} FCFA</td>
                 </tr>
             @endforeach
         </tbody>
@@ -153,7 +154,7 @@
         <table>
             <tr>
                 <td>Total HT</td>
-                <td style="text-align: right;">{{ number_format($project->total_price, 2) }} €</td>
+                <td style="text-align: right;">{{ number_format($project->total_price, 0, ',', ' ') }} FCFA</td>
             </tr>
             <tr>
                 <td>Délai Total</td>
@@ -161,13 +162,13 @@
             </tr>
             <tr class="grand-total">
                 <td>TOTAL TTC</td>
-                <td style="text-align: right;">{{ number_format($project->total_price, 2) }} €</td>
+                <td style="text-align: right;">{{ number_format($project->total_price, 0, ',', ' ') }} FCFA</td>
             </tr>
             <tr>
                 <td colspan="2" style="padding-top: 20px;">
                     <strong>Modalités de paiement :</strong><br>
-                    Acompte (40%) : {{ number_format($project->quote->deposit_amount, 2) }} €<br>
-                    Solde (60%) : {{ number_format($project->quote->balance_amount, 2) }} €
+                    Acompte (40%) : {{ number_format($project->quote->deposit_amount, 0, ',', ' ') }} FCFA<br>
+                    Solde (60%) : {{ number_format($project->quote->balance_amount, 0, ',', ' ') }} FCFA
                 </td>
             </tr>
         </table>

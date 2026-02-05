@@ -28,48 +28,57 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-                    <div @click="open = ! open">
-                        <button
-                            class="flex items-center space-x-3 bg-white/5 border border-white/10 px-4 py-2 rounded-xl text-sm font-bold text-gray-300 hover:bg-white/10 transition">
-                            <div
-                                class="w-8 h-8 rounded-lg bg-indigo-600/20 flex items-center justify-center text-indigo-400">
-                                {{ substr(Auth::user()->name, 0, 1) }}
-                            </div>
-                            <span>{{ Auth::user()->name }}</span>
-                            <svg class="fill-current h-4 w-4 transform transition duration-200"
-                                :class="{'rotate-180': open}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div x-show="open" x-transition:enter="transition ease-out duration-200"
-                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-75"
-                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                        class="absolute right-0 mt-3 w-48 rounded-2xl shadow-2xl bg-slate-900 border border-white/10 py-2 z-50 overflow-hidden"
-                        style="display: none;" @click="open = false">
-
-                        <a href="{{ route('profile.edit') }}"
-                            class="block w-full px-4 py-3 text-sm font-bold text-gray-400 hover:bg-white/5 hover:text-white transition">
-                            {{ __('Profil') }}
-                        </a>
-
-                        <div class="h-px bg-white/5 mx-4 my-2"></div>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit"
-                                class="block w-full text-left px-4 py-3 text-sm font-bold text-red-400/80 hover:bg-white/5 hover:text-red-400 transition">
-                                {{ __('Déconnexion') }}
+                @auth
+                    <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
+                        <div @click="open = ! open">
+                            <button
+                                class="flex items-center space-x-3 bg-white/5 border border-white/10 px-4 py-2 rounded-xl text-sm font-bold text-gray-300 hover:bg-white/10 transition">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-indigo-600/20 flex items-center justify-center text-indigo-400">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                                <span>{{ Auth::user()->name }}</span>
+                                <svg class="fill-current h-4 w-4 transform transition duration-200"
+                                    :class="{'rotate-180': open}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             </button>
-                        </form>
+                        </div>
+
+                        <div x-show="open" x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                            class="absolute right-0 mt-3 w-48 rounded-2xl shadow-2xl bg-slate-900 border border-white/10 py-2 z-50 overflow-hidden"
+                            style="display: none;" @click="open = false">
+
+                            <a href="{{ route('profile.edit') }}"
+                                class="block w-full px-4 py-3 text-sm font-bold text-gray-400 hover:bg-white/5 hover:text-white transition">
+                                {{ __('Profil') }}
+                            </a>
+
+                            <div class="h-px bg-white/5 mx-4 my-2"></div>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                    class="block w-full text-left px-4 py-3 text-sm font-bold text-red-400/80 hover:bg-white/5 hover:text-red-400 transition">
+                                    {{ __('Déconnexion') }}
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div class="flex items-center space-x-6">
+                        <a href="{{ route('login') }}"
+                            class="text-sm font-bold text-gray-400 hover:text-white transition">Connexion</a>
+                        <a href="{{ route('register') }}"
+                            class="bg-indigo-600 px-6 py-2 rounded-full font-bold text-sm shadow-xl shadow-indigo-600/20 hover:bg-indigo-700 transition">S'inscrire</a>
+                    </div>
+                @endauth
             </div>
 
             <!-- Hamburger -->
@@ -102,6 +111,7 @@
 
         <!-- Responsive Settings Options -->
         <div class="pt-6 border-t border-white/5">
+            @auth
             <div class="px-4 mb-4">
                 <div class="font-bold text-base text-white">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
@@ -121,6 +131,16 @@
                     </button>
                 </form>
             </div>
+            @else
+            <div class="space-y-2 px-4">
+                <a href="{{ route('login') }}" class="block px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-white/5 hover:text-white transition">
+                    {{ __('Connexion') }}
+                </a>
+                <a href="{{ route('register') }}" class="block px-4 py-3 rounded-xl font-bold text-indigo-400 bg-indigo-600/10 hover:bg-indigo-600/20 transition">
+                    {{ __('S\'inscrire') }}
+                </a>
+            </div>
+            @endauth
         </div>
     </div>
 </nav>
