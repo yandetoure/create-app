@@ -38,6 +38,12 @@ class CategorySeeder extends Seeder
                 ['name' => 'Auto-école digitalisée', 'slug' => 'auto-ecole', 'base_price' => 500000, 'base_duration_days' => 10],
                 ['name' => 'Espace coworking', 'slug' => 'coworking', 'base_price' => 450000, 'base_duration_days' => 8],
                 ['name' => 'Salle de sport / Fitness', 'slug' => 'fitness', 'base_price' => 350000, 'base_duration_days' => 7],
+                // Expanded types
+                ['name' => 'Site de Cinéma / Théâtre', 'slug' => 'cinema', 'base_price' => 650000, 'base_duration_days' => 14],
+                ['name' => 'Billetterie en ligne', 'slug' => 'billetterie', 'base_price' => 900000, 'base_duration_days' => 20],
+                ['name' => 'Blog Littéraire / Lecture', 'slug' => 'lecture', 'base_price' => 300000, 'base_duration_days' => 6],
+                ['name' => 'Site d\'Information / Média', 'slug' => 'media-info', 'base_price' => 800000, 'base_duration_days' => 18],
+                ['name' => 'Site de Services / Consulting', 'slug' => 'consulting', 'base_price' => 350000, 'base_duration_days' => 7],
             ],
             'app-mobile' => [
                 ['name' => 'App de Livraison (Uber Like)', 'slug' => 'livraison', 'base_price' => 1500000, 'base_duration_days' => 25],
@@ -57,6 +63,9 @@ class CategorySeeder extends Seeder
                 ['name' => 'App de Pet Sitting / Animaux', 'slug' => 'pets', 'base_price' => 1100000, 'base_duration_days' => 20],
                 ['name' => 'App pour Services de Nettoyage', 'slug' => 'cleaning', 'base_price' => 1300000, 'base_duration_days' => 22],
                 ['name' => 'App de Recettes de cuisine', 'slug' => 'cuisine', 'base_price' => 950000, 'base_duration_days' => 18],
+                // Expanded types
+                ['name' => 'Gestion Flotte Véhicules', 'slug' => 'flotte-vehicule', 'base_price' => 2800000, 'base_duration_days' => 45],
+                ['name' => 'Location de Matériel / Équipement', 'slug' => 'location-materiel', 'base_price' => 1600000, 'base_duration_days' => 30],
             ],
             'web-app' => [
                 ['name' => 'SaaS Gestion Scolaire (ERP)', 'slug' => 'scolaire', 'base_price' => 2500000, 'base_duration_days' => 40],
@@ -73,9 +82,11 @@ class CategorySeeder extends Seeder
                 ['name' => 'Logiciel de Gestion Hospitalière', 'slug' => 'hospital-mgmt', 'base_price' => 5500000, 'base_duration_days' => 100],
                 ['name' => 'Plateforme d\'Appels d\'offres', 'slug' => 'tender', 'base_price' => 2600000, 'base_duration_days' => 42],
                 ['name' => 'Logiciel de Logistique / Flotte', 'slug' => 'logistique', 'base_price' => 3800000, 'base_duration_days' => 60],
-                ['name' => 'SaaS de Gestion de Microfinance', 'slug' => 'agriculture', 'base_price' => 2200000, 'base_duration_days' => 35],
+                ['name' => 'SaaS de Gestion Agricole', 'slug' => 'agriculture', 'base_price' => 2200000, 'base_duration_days' => 35],
                 ['name' => 'Logiciel de Paie (Payroll)', 'slug' => 'payroll', 'base_price' => 2000000, 'base_duration_days' => 32],
                 ['name' => 'Plateforme de Concours en ligne', 'slug' => 'concours', 'base_price' => 1500000, 'base_duration_days' => 25],
+                // Expanded types
+                ['name' => 'Planning & Gestion de Temps', 'slug' => 'planning', 'base_price' => 1900000, 'base_duration_days' => 28],
             ]
         ];
 
