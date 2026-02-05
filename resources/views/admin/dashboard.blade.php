@@ -7,7 +7,8 @@
             @foreach($stats as $label => $value)
                 <div class="bg-white/5 border border-white/10 p-8 rounded-3xl shadow-xl">
                     <p class="text-[10px] font-black uppercase tracking-widest text-indigo-400 mb-2">
-                        {{ str_replace('_', ' ', $label) }}</p>
+                        {{ str_replace('_', ' ', $label) }}
+                    </p>
                     <div class="flex items-end space-x-2">
                         <span class="text-4xl font-black tracking-tighter">
                             {{ is_numeric($value) && $value >= 1000 ? number_format($value / 1000, 1) . 'k' : number_format($value, 0, ',', ' ') }}
@@ -36,6 +37,8 @@
                             </th>
                             <th class="px-8 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Statut</th>
                             <th class="px-8 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Prix</th>
+                            <th class="px-8 py-4 text-xs font-bold uppercase tracking-widest text-gray-500 text-right">
+                                Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-white/5">
@@ -55,11 +58,49 @@
                                 </td>
                                 <td class="px-8 py-6">
                                     <span
-                                        class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest {{ $project->status === 'completed' ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400' }}">
+                                        class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest {{ $project->status === 'completed' ? 'bg-green-500/10 text-green-400' : ($project->status === 'new' ? 'bg-blue-500/10 text-blue-400' : 'bg-yellow-500/10 text-yellow-400') }}">
                                         {{ $project->status }}
                                     </span>
                                 </td>
                                 <td class="px-8 py-6 font-bold">{{ number_format($project->total_price, 0, ',', ' ') }} FCFA
+                                </td>
+                                <td class="px-8 py-6 text-right space-x-2">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        @if($project->status === 'new' || $project->status === 'pending')
+                                            <form action="{{ route('admin.projects.approve', $project) }}" method="POST"
+                                                class="inline">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="p-2 bg-green-500/10 text-green-500 rounded-lg hover:bg-green-500 hover:text-white transition"
+                                                    title="Approuver">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('admin.projects.reject', $project) }}" method="POST"
+                                                class="inline">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="p-2 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition"
+                                                    title="Refuser">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        @endif
+                                        <a href="{{ route('admin.projects.manage', $project) }}"
+                                            class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg hover:bg-indigo-500 hover:text-white transition"
+                                            title="Gérer">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                            </svg>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

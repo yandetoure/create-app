@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\FeatureCategoryController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\TeamController;
+use App\Http\Controllers\Admin\ProjectManagementController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -26,3 +28,12 @@ Route::resource('features', FeatureController::class);
 Route::get('/deliverables', function () {
     return view('admin.deliverables.index');
 })->name('deliverables.index');
+
+Route::get('team', [TeamController::class, 'index'])->name('team.index');
+Route::get('team/{user}', [TeamController::class, 'show'])->name('team.show');
+
+Route::get('projects/{project}/manage', [ProjectManagementController::class, 'manage'])->name('projects.manage');
+Route::post('projects/{project}/assign', [ProjectManagementController::class, 'assign'])->name('projects.assign');
+Route::post('projects/{project}/deliverables', [ProjectManagementController::class, 'storeDeliverable'])->name('deliverables.store');
+Route::post('projects/{project}/tasks', [ProjectManagementController::class, 'storeTask'])->name('tasks.store');
+Route::put('tasks/{task}/status', [ProjectManagementController::class, 'updateTaskStatus'])->name('tasks.update-status');

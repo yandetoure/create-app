@@ -17,8 +17,8 @@
                 'admin' => [
                     ['name' => 'Tableau de bord', 'route' => 'admin.dashboard', 'icon' => 'squares-2x2'],
                     ['name' => 'Projets', 'route' => 'admin.projects.index', 'icon' => 'briefcase'],
-                    ['name' => 'Développeurs', 'route' => 'admin.developers.index', 'icon' => 'code-bracket'],
                     ['name' => 'Types de Projet', 'route' => 'admin.project-types.index', 'icon' => 'swatch'],
+                    ['name' => 'Equipe', 'route' => 'admin.team.index', 'icon' => 'users'],
                     ['name' => 'Catégories (types)', 'route' => 'admin.categories.index', 'icon' => 'tag'],
                     ['name' => 'Fonctionnalités', 'route' => 'admin.features.index', 'icon' => 'puzzle-piece'],
                     ['name' => 'Catégories (fonct)', 'route' => 'admin.feature-categories.index', 'icon' => 'list-bullet'],

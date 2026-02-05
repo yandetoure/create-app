@@ -1,7 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Client\ProjectConfigurationController;
 
 Route::get('/dashboard', function () {
-    return view('client.dashboard');
+    $projects = auth()->user()->clientProjects()->with('projectType')->latest()->paginate(10);
+    return view('client.dashboard', compact('projects'));
 })->name('dashboard');
+
+Route::get('/projects/{project}/configure', [ProjectConfigurationController::class, 'edit'])->name('projects.configure');
+Route::post('/projects/{project}/configure', [ProjectConfigurationController::class, 'update'])->name('projects.configure.update');

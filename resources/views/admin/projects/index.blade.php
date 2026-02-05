@@ -65,7 +65,7 @@
                                                         {{ number_format($project->total_price, 0, ',', ' ') }} FCFA</div>
                                                 </td>
                                                 <td class="px-8 py-6">
-                                                    <a href="{{ route('admin.projects.show', $project) }}"
+                                                    <a href="{{ route('admin.projects.manage', $project) }}"
                                                         class="inline-flex items-center space-x-2 text-indigo-400 font-bold text-xs hover:text-white transition">
                                                         <span>Gérer</span>
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

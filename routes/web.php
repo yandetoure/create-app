@@ -8,7 +8,7 @@ Route::get('/', function () {
         'categories' => \App\Models\Category::with('projectTypes')->get(),
         'features' => \App\Models\Feature::where('is_default', true)->take(6)->get(),
         'counts' => [
-            'projects' => \App\Models\Project::count() + 10000, // Matching the 10k+ in UI
+            'projects' => \App\Models\Project::count() + 10000,
             'categories' => \App\Models\Category::count(),
             'features' => \App\Models\Feature::count(),
         ]

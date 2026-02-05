@@ -25,13 +25,15 @@
                                 <h4 class="text-2xl font-black group-hover:text-indigo-400 transition">{{ $project->name }}
                                 </h4>
                                 <p class="text-gray-400 text-sm font-medium">{{ $project->projectType->name }} • Commandé le
-                                    {{ $project->created_at->format('d/m/Y') }}</p>
+                                    {{ $project->created_at->format('d/m/Y') }}
+                                </p>
                             </div>
                         </div>
 
                         <div class="flex flex-col items-end">
                             <div class="text-2xl font-black tracking-tighter">
-                                {{ number_format($project->total_price, 0, ',', ' ') }} FCFA</div>
+                                {{ number_format($project->total_price, 0, ',', ' ') }} FCFA
+                            </div>
                             <span
                                 class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mt-2 {{ $project->status === 'completed' ? 'bg-green-500/10 text-green-400' : 'bg-indigo-500/10 text-indigo-400' }}">
                                 {{ $project->status }}
@@ -40,8 +42,12 @@
 
                         <div class="flex items-center space-x-3">
                             <a href="{{ route('projects.show', $project) }}"
-                                class="p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition">
-                                Visualiser
+                                class="p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition text-sm font-bold text-gray-400">
+                                Détails
+                            </a>
+                            <a href="{{ route('client.projects.configure', $project) }}"
+                                class="p-4 bg-indigo-600 border border-indigo-500 rounded-2xl hover:bg-indigo-700 transition text-sm font-bold text-white shadow-xl shadow-indigo-600/20">
+                                Configurer
                             </a>
                         </div>
                     </div>

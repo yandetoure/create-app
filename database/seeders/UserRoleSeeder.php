@@ -28,7 +28,7 @@ class UserRoleSeeder extends Seeder
             ['email' => 'cm@example.com', 'name' => 'CM Social', 'role' => 'community_manager'],
 
             // Project Leads
-            ['email' => 'lead@example.com', 'name' => 'Project Manager', 'role' => 'project_lead'],
+            ['email' => 'lead@example.com', 'name' => 'Project Manager', 'role' => 'project_manager'],
         ];
 
         foreach ($users as $userData) {
