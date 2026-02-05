@@ -6,11 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $fillable = ['user_id', 'project_type_id', 'name', 'slug', 'preview_slug', 'total_price', 'total_duration', 'status'];
+    protected $fillable = ['user_id', 'developer_id', 'project_type_id', 'name', 'slug', 'preview_slug', 'total_price', 'total_duration', 'status'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function developer()
+    {
+        return $this->belongsTo(User::class, 'developer_id');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 
     public function projectType()

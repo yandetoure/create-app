@@ -15,8 +15,24 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <a href="{{ route('dashboard') }}"
-                        class="inline-flex items-center px-1 pt-1 text-sm font-bold tracking-wide uppercase transition duration-150 ease-in-out {{ request()->routeIs('dashboard') ? 'text-indigo-400 border-b-2 border-indigo-400' : 'text-gray-400 hover:text-white border-b-2 border-transparent' }}">
+                    @php
+                        $dashboardRoute = 'dashboard';
+                        if (Auth::check()) {
+                            if (Auth::user()->hasRole('admin')) {
+                                $dashboardRoute = 'admin.dashboard';
+                            } elseif (Auth::user()->hasRole('developer')) {
+                                $dashboardRoute = 'developer.dashboard';
+                            } elseif (Auth::user()->hasRole('client')) {
+                                $dashboardRoute = 'client.dashboard';
+                            } elseif (Auth::user()->hasRole('community_manager')) {
+                                $dashboardRoute = 'cm.dashboard';
+                            } elseif (Auth::user()->hasRole('project_lead')) {
+                                $dashboardRoute = 'lead.dashboard';
+                            }
+                        }
+                    @endphp
+                    <a href="{{ route($dashboardRoute) }}"
+                        class="inline-flex items-center px-1 pt-1 text-sm font-bold tracking-wide uppercase transition duration-150 ease-in-out {{ request()->routeIs($dashboardRoute) ? 'text-indigo-400 border-b-2 border-indigo-400' : 'text-gray-400 hover:text-white border-b-2 border-transparent' }}">
                         {{ __('Dashboard') }}
                     </a>
                     <a href="{{ route('configurator.index') }}"
@@ -112,34 +128,36 @@
         <!-- Responsive Settings Options -->
         <div class="pt-6 border-t border-white/5">
             @auth
-            <div class="px-4 mb-4">
-                <div class="font-bold text-base text-white">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
+                <div class="px-4 mb-4">
+                    <div class="font-bold text-base text-white">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                </div>
 
-            <div class="space-y-1">
-                <a href="{{ route('profile.edit') }}"
-                    class="block px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-white/5 hover:text-white">
-                    {{ __('Profil') }}
-                </a>
+                <div class="space-y-1">
+                    <a href="{{ route('profile.edit') }}"
+                        class="block px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-white/5 hover:text-white">
+                        {{ __('Profil') }}
+                    </a>
 
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit"
-                        class="block w-full text-left px-4 py-3 rounded-xl font-bold text-red-400/80 hover:bg-white/5 hover:text-red-400">
-                        {{ __('Déconnexion') }}
-                    </button>
-                </form>
-            </div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                            class="block w-full text-left px-4 py-3 rounded-xl font-bold text-red-400/80 hover:bg-white/5 hover:text-red-400">
+                            {{ __('Déconnexion') }}
+                        </button>
+                    </form>
+                </div>
             @else
-            <div class="space-y-2 px-4">
-                <a href="{{ route('login') }}" class="block px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-white/5 hover:text-white transition">
-                    {{ __('Connexion') }}
-                </a>
-                <a href="{{ route('register') }}" class="block px-4 py-3 rounded-xl font-bold text-indigo-400 bg-indigo-600/10 hover:bg-indigo-600/20 transition">
-                    {{ __('S\'inscrire') }}
-                </a>
-            </div>
+                <div class="space-y-2 px-4">
+                    <a href="{{ route('login') }}"
+                        class="block px-4 py-3 rounded-xl font-bold text-gray-400 hover:bg-white/5 hover:text-white transition">
+                        {{ __('Connexion') }}
+                    </a>
+                    <a href="{{ route('register') }}"
+                        class="block px-4 py-3 rounded-xl font-bold text-indigo-400 bg-indigo-600/10 hover:bg-indigo-600/20 transition">
+                        {{ __('S\'inscrire') }}
+                    </a>
+                </div>
             @endauth
         </div>
     </div>

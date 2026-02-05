@@ -12,25 +12,18 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->hasRole('developer')) {
-            $projects = Project::with(['user', 'projectType.category'])->latest()->paginate(10);
-            $stats = [
-                'total_projects' => Project::count(),
-                'total_value' => Project::sum('total_price'),
-                'active_clients' => Project::distinct('user_id')->count(),
-            ];
-        } else {
-            $projects = Project::where('user_id', $user->id)
-                ->with(['projectType.category'])
-                ->latest()
-                ->paginate(10);
-            $stats = [
-                'total_projects' => $projects->total(),
-                'total_value' => Project::where('user_id', $user->id)->sum('total_price'),
-                'pending_quotes' => Project::where('user_id', $user->id)->where('status', 'pending')->count(),
-            ];
+        if ($user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->hasRole('developer')) {
+            return redirect()->route('developer.dashboard');
+        } elseif ($user->hasRole('client')) {
+            return redirect()->route('client.dashboard');
+        } elseif ($user->hasRole('community_manager')) {
+            return redirect()->route('cm.dashboard');
+        } elseif ($user->hasRole('project_lead')) {
+            return redirect()->route('lead.dashboard');
         }
 
-        return view('dashboard', compact('projects', 'stats'));
+        return view('dashboard');
     }
 }
