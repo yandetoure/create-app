@@ -14,8 +14,8 @@ class QuoteService
         $baseDuration = $type->base_duration_days;
 
         $features = Feature::whereIn('id', $featureIds)->get();
-        $featuresPrice = $features->sum('price');
-        $featuresDuration = $features->sum('impact_days');
+        $featuresPrice = $features->where('is_base', false)->sum('price');
+        $featuresDuration = $features->where('is_base', false)->sum('impact_days'); // Only pricing-related duration? Actually user said "si on ajoute aux fonctionnalités a un projet en tant que foctionnalité de base on n'ajoute pas son prix au prix du projet" - didn't mention duration. Usually base features also shouldn't add duration logic if they are part of the base package? But let's stick to price for now as requested.
 
         $totalPrice = $basePrice + $featuresPrice;
         $totalDuration = $baseDuration + $featuresDuration;

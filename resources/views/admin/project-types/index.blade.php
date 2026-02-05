@@ -40,10 +40,27 @@
                                         </div>
                                     </td>
                                     <td class="px-8 py-6">
-                                        <input type="number" name="base_duration" value="{{ $type->base_duration }}"
+                                        <input type="number" name="base_duration_days"
+                                            value="{{ $type->base_duration_days }}"
                                             class="bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-sm font-black w-20 focus:border-indigo-500 outline-none text-center">
                                     </td>
                                     <td class="px-8 py-6 flex items-center space-x-2">
+                                        <a href="{{ route('admin.project-types.show', $type) }}"
+                                            class="p-3 bg-white/5 text-gray-400 rounded-xl hover:bg-white/10 hover:text-white transition">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                        </a>
+                                        <a href="{{ route('admin.project-types.edit', $type) }}"
+                                            class="p-3 bg-white/5 text-gray-400 rounded-xl hover:bg-indigo-600 hover:text-white transition">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                        </a>
                                         <button type="submit"
                                             class="p-3 bg-indigo-600/10 text-indigo-400 rounded-xl hover:bg-indigo-600 hover:text-white transition group-hover:scale-110 shadow-lg shadow-indigo-600/0 hover:shadow-indigo-600/20">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +120,7 @@
                 <div class="space-y-2">
                     <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Durée (jours)</label>
                     <div class="flex space-x-2">
-                        <input type="number" name="base_duration"
+                        <input type="number" name="base_duration_days"
                             class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-indigo-500 transition"
                             required>
                         <button type="submit"

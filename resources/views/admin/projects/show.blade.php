@@ -14,12 +14,14 @@
                         <div>
                             <h2 class="text-3xl font-black">{{ $project->name }}</h2>
                             <p class="text-gray-400 font-bold uppercase text-xs tracking-widest mt-1">
-                                {{ $project->projectType->name }}</p>
+                                {{ $project->projectType->name }}
+                            </p>
                         </div>
                     </div>
                     <div class="text-right">
                         <div class="text-3xl font-black text-white">
-                            {{ number_format($project->total_price, 0, ',', ' ') }} FCFA</div>
+                            {{ number_format($project->total_price, 0, ',', ' ') }} FCFA
+                        </div>
                         <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mt-1">Budget Total Estimé
                         </p>
                     </div>
@@ -104,6 +106,25 @@
                 <h4 class="text-xs font-black uppercase tracking-widest text-indigo-400 mb-6 relative">Assignation &
                     Statut</h4>
 
+                @if(in_array($project->status, ['new', 'pending']))
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <form action="{{ route('admin.projects.approve', $project) }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="w-full py-4 bg-green-500/10 text-green-400 rounded-2xl font-black text-[10px] uppercase tracking-widest border border-green-500/20 hover:bg-green-600 hover:text-white transition">
+                                Approuver
+                            </button>
+                        </form>
+                        <form action="{{ route('admin.projects.reject', $project) }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="w-full py-4 bg-red-500/10 text-red-400 rounded-2xl font-black text-[10px] uppercase tracking-widest border border-red-500/20 hover:bg-red-500 hover:text-white transition">
+                                Refuser
+                            </button>
+                        </form>
+                    </div>
+                @endif
+
                 <form action="{{ route('admin.projects.update', $project) }}" method="POST" class="space-y-6 relative">
                     @csrf
                     @method('PUT')
@@ -113,11 +134,13 @@
                             class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 block">Développeur
                             en charge</label>
                         <select name="developer_id"
-                            class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-indigo-500 transition appearance-none">
-                            <option value="">Non assigné</option>
+                            class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-indigo-500 transition appearance-none text-white">
+                            <option value="" class="bg-gray-900">Non assigné</option>
                             @foreach($developers as $dev)
-                                <option value="{{ $dev->id }}" {{ $project->developer_id == $dev->id ? 'selected' : '' }}>
-                                    {{ $dev->name }}</option>
+                                <option value="{{ $dev->id }}" {{ $project->developer_id == $dev->id ? 'selected' : '' }}
+                                    class="bg-gray-900">
+                                    {{ $dev->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -126,15 +149,23 @@
                         <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 block">État du
                             projet</label>
                         <select name="status"
-                            class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-indigo-500 transition appearance-none">
-                            <option value="new" {{ $project->status === 'new' ? 'selected' : '' }}>Nouveau</option>
-                            <option value="pending" {{ $project->status === 'pending' ? 'selected' : '' }}>En attente
+                            class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-indigo-500 transition appearance-none text-white">
+                            <option value="new" {{ $project->status === 'new' ? 'selected' : '' }} class="bg-gray-900">
+                                Nouveau</option>
+                            <option value="pending" {{ $project->status === 'pending' ? 'selected' : '' }}
+                                class="bg-gray-900">En attente
                             </option>
-                            <option value="in_progress" {{ $project->status === 'in_progress' ? 'selected' : '' }}>En
+                            <option value="in_progress" {{ $project->status === 'in_progress' ? 'selected' : '' }}
+                                class="bg-gray-900">En
                                 développement</option>
-                            <option value="completed" {{ $project->status === 'completed' ? 'selected' : '' }}>Terminé
+                            <option value="completed" {{ $project->status === 'completed' ? 'selected' : '' }}
+                                class="bg-gray-900">Terminé
                             </option>
-                            <option value="cancelled" {{ $project->status === 'cancelled' ? 'selected' : '' }}>Annulé
+                            <option value="rejected" {{ $project->status === 'rejected' ? 'selected' : '' }}
+                                class="bg-gray-900">Refusé
+                            </option>
+                            <option value="cancelled" {{ $project->status === 'cancelled' ? 'selected' : '' }}
+                                class="bg-gray-900">Annulé
                             </option>
                         </select>
                     </div>
@@ -144,6 +175,18 @@
                         Mettre à jour
                     </button>
                 </form>
+
+                <div class="mt-8 pt-6 border-t border-white/5">
+                    <form action="{{ route('admin.projects.destroy', $project) }}" method="POST"
+                        onsubmit="return confirm('Confirmer la suppression ?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class="w-full text-[10px] font-black uppercase tracking-widest text-red-500/50 hover:text-red-500 transition">
+                            Supprimer le projet de la base
+                        </button>
+                    </form>
+                </div>
             </div>
 
             <!-- Client Info Card -->

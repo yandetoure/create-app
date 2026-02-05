@@ -15,13 +15,13 @@ class FeatureSeeder extends Seeder
      */
     public function run(): void
     {
-        $uiCategory = FeatureCategory::create(['name' => 'Interface & Design UI/UX', 'icon' => 'paint-brush']);
-        $authCategory = FeatureCategory::create(['name' => 'Sécurité & Authentification', 'icon' => 'lock-closed']);
-        $paymentCategory = FeatureCategory::create(['name' => 'Paiements & Facturation', 'icon' => 'credit-card']);
-        $commCategory = FeatureCategory::create(['name' => 'Communication & Social', 'icon' => 'chat-bubble-left-right']);
-        $techCategory = FeatureCategory::create(['name' => 'Technique & Infrastructure', 'icon' => 'cpu-chip']);
-        $aiCategory = FeatureCategory::create(['name' => 'Intelligence Artificielle & Data', 'icon' => 'beaker']);
-        $marketingCategory = FeatureCategory::create(['name' => 'Marketing & Croissance', 'icon' => 'megaphone']);
+        $uiCategory = FeatureCategory::updateOrCreate(['name' => 'Interface & Design UI/UX'], ['icon' => 'paint-brush']);
+        $authCategory = FeatureCategory::updateOrCreate(['name' => 'Sécurité & Authentification'], ['icon' => 'lock-closed']);
+        $paymentCategory = FeatureCategory::updateOrCreate(['name' => 'Paiements & Facturation'], ['icon' => 'credit-card']);
+        $commCategory = FeatureCategory::updateOrCreate(['name' => 'Communication & Social'], ['icon' => 'chat-bubble-left-right']);
+        $techCategory = FeatureCategory::updateOrCreate(['name' => 'Technique & Infrastructure'], ['icon' => 'cpu-chip']);
+        $aiCategory = FeatureCategory::updateOrCreate(['name' => 'Intelligence Artificielle & Data'], ['icon' => 'beaker']);
+        $marketingCategory = FeatureCategory::updateOrCreate(['name' => 'Marketing & Croissance'], ['icon' => 'megaphone']);
 
         // --- Interface & Design --- (15 features)
         $features = [
@@ -143,7 +143,7 @@ class FeatureSeeder extends Seeder
             ['feature_category_id' => $marketingCategory->id, 'name' => 'Facebook Pixel / API', 'slug' => 'fb-pixel', 'description' => 'Conversion Ads', 'price' => 80000, 'impact_days' => 1],
             ['feature_category_id' => $marketingCategory->id, 'name' => 'A/B Testing Tool', 'slug' => 'ab-test', 'description' => 'Optimisation landing', 'price' => 250000, 'impact_days' => 4],
             ['feature_category_id' => $marketingCategory->id, 'name' => 'Popups Smart Exit', 'slug' => 'popups', 'description' => 'Retrait de lead', 'price' => 60000, 'impact_days' => 1],
-            ['feature_category_id' => $marketingCategory->id, 'name' => 'Gestion des Funnels', 'slug' => 'funnels', 'description' => 'Entonnoise de vente', 'price' => 300000, 'impact_days' => 5],
+            ['feature_category_id' => $marketingCategory->id, 'name' => 'Gestion de Funnels', 'slug' => 'funnels', 'description' => 'Entonnoise de vente', 'price' => 300000, 'impact_days' => 5],
             ['feature_category_id' => $marketingCategory->id, 'name' => 'Blog Auto-Post Social', 'slug' => 'social-autopost', 'description' => 'Synchro réseaux', 'price' => 180000, 'impact_days' => 3],
             ['feature_category_id' => $marketingCategory->id, 'name' => 'CRM Marketing (Mailchimp)', 'slug' => 'mailchimp', 'description' => 'Automation mails', 'price' => 120000, 'impact_days' => 2],
             ['feature_category_id' => $marketingCategory->id, 'name' => 'Hotjar / Heatmaps', 'slug' => 'heatmaps', 'description' => 'Analyse du clic user', 'price' => 90000, 'impact_days' => 2],
@@ -157,7 +157,7 @@ class FeatureSeeder extends Seeder
         ]);
 
         foreach ($features as $featureData) {
-            Feature::create($featureData);
+            Feature::updateOrCreate(['slug' => $featureData['slug']], $featureData);
         }
     }
 }
