@@ -37,6 +37,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
             // Notifications routes (accessible to all authenticated users)
             Route::middleware(['web'])->group(base_path('routes/notifications.php'));
+
+            // Comments routes (accessible to all authenticated users)
+            Route::middleware(['web'])->group(base_path('routes/comments.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
