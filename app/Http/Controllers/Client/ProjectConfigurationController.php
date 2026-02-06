@@ -45,7 +45,7 @@ class ProjectConfigurationController extends Controller
             'specifications_file' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
             'specifications_content' => 'nullable|string',
             'reference_sites' => 'nullable|array',
-            'reference_sites.*.url' => 'required_with:reference_sites|url',
+            'reference_sites.*.url' => 'nullable|url',
             'reference_sites.*.description' => 'nullable|string|max:500',
             'resources' => 'nullable|array',
             'resources.*' => 'file|max:5120',

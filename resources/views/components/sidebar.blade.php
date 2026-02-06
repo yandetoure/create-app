@@ -26,8 +26,10 @@
                     ['name' => 'Livrables', 'route' => 'admin.deliverables.index', 'icon' => 'rocket-launch'],
                 ],
                 'developer' => [
-                    ['name' => 'Mes Projets', 'route' => 'developer.dashboard', 'icon' => 'command-line'],
-                    ['name' => 'Mes Tâches', 'route' => 'developer.dashboard', 'icon' => 'list-bullet'],
+                    ['name' => 'Dashboard', 'route' => 'developer.dashboard', 'icon' => 'squares-2x2'],
+                    ['name' => 'Mes Projets', 'route' => 'developer.projects.index', 'icon' => 'briefcase'],
+                    ['name' => 'Mes Tâches', 'route' => 'developer.tasks.index', 'icon' => 'list-bullet'],
+                    ['name' => 'Livrables', 'route' => 'developer.deliverables.index', 'icon' => 'rocket-launch'],
                 ],
                 'client' => [
                     ['name' => 'Mes Projets', 'route' => 'client.dashboard', 'icon' => 'rocket-launch'],
