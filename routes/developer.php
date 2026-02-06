@@ -96,6 +96,15 @@ Route::post('/projects/{project}/upload-demo', function (\App\Models\Project $pr
 
     $project->update(['demo_files' => $demoFiles]);
 
+    // Notify client about new demo
+    $notificationService = app(\App\Services\NotificationService::class);
+    $notificationService->notify(
+        $project->user,
+        'demo_added',
+        $project,
+        ['project_name' => $project->name]
+    );
+
     return redirect()->route('developer.projects.show', $project)->with('success', 'Démo ajoutée avec succès !');
 })->name('projects.upload-demo');
 
@@ -151,7 +160,22 @@ Route::patch('/tasks/{task}', function (\App\Models\Task $task, \Illuminate\Http
         'status' => 'required|in:pending,in_progress,completed',
     ]);
 
+    $oldStatus = $task->status;
     $task->update(['status' => $request->status]);
+
+    // Notify client if task status changed
+    if ($oldStatus !== $request->status) {
+        $notificationService = app(\App\Services\NotificationService::class);
+        $notificationService->notify(
+            $task->project->user,
+            'task_status_changed',
+            $task,
+            [
+                'task_name' => $task->name,
+                'status' => $request->status,
+            ]
+        );
+    }
 
     return redirect()->back()->with('success', 'Statut de la tâche mis à jour !');
 })->name('tasks.update');

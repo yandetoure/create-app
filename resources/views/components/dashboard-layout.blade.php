@@ -42,12 +42,84 @@
                 <h1 class="text-2xl font-bold tracking-tight">{{ $title ?? 'Dashboard' }}</h1>
             </div>
             <div class="flex items-center space-x-4">
-                <button class="p-2 text-gray-400 hover:text-white transition">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                </button>
+                <!-- Notifications Dropdown -->
+                <div x-data="{ 
+                    open: false, 
+                    notifications: [],
+                    unreadCount: {{ auth()->user()->notifications()->unread()->count() }}
+                }" class="relative">
+                    <button @click="open = !open" class="relative p-2 text-gray-400 hover:text-white transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span x-show="unreadCount > 0" x-text="unreadCount"
+                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"></span>
+                    </button>
+
+                    <!-- Dropdown -->
+                    <div x-show="open" @click.away="open = false" x-cloak
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                        class="absolute right-0 mt-2 w-96 bg-slate-800 border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50">
+
+                        <!-- Header -->
+                        <div class="p-4 border-b border-white/10 flex items-center justify-between">
+                            <h3 class="font-bold text-white">Notifications</h3>
+                            @if(auth()->user()->notifications()->unread()->count() > 0)
+                                <form method="POST" action="{{ route('notifications.read-all') }}">
+                                    @csrf
+                                    <button type="submit" class="text-xs text-indigo-400 hover:text-indigo-300">
+                                        Tout marquer comme lu
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
+
+                        <!-- Notifications List -->
+                        <div class="max-h-96 overflow-y-auto">
+                            @forelse(auth()->user()->notifications()->limit(5)->get() as $notification)
+                                <a href="{{ route('notifications.read', $notification->id) }}"
+                                    class="block p-4 hover:bg-white/5 transition border-b border-white/5 {{ $notification->isUnread() ? 'bg-indigo-600/5' : '' }}">
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-2xl">{{ $notification->icon }}</span>
+                                        <div class="flex-1 min-w-0">
+                                            <p
+                                                class="text-sm {{ $notification->isUnread() ? 'font-bold text-white' : 'text-gray-400' }}">
+                                                {{ $notification->message }}
+                                            </p>
+                                            <p class="text-xs text-gray-500 mt-1">
+                                                {{ $notification->created_at->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                        @if($notification->isUnread())
+                                            <div class="w-2 h-2 bg-indigo-500 rounded-full"></div>
+                                        @endif
+                                    </div>
+                                </a>
+                            @empty
+                                <div class="p-8 text-center text-gray-500">
+                                    <svg class="w-12 h-12 mx-auto mb-3 text-gray-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                    </svg>
+                                    <p class="text-sm">Aucune notification</p>
+                                </div>
+                            @endforelse
+                        </div>
+
+                        <!-- Footer -->
+                        @if(auth()->user()->notifications()->count() > 0)
+                            <div class="p-3 border-t border-white/10 text-center">
+                                <a href="{{ route('notifications.index') }}"
+                                    class="text-sm text-indigo-400 hover:text-indigo-300 font-bold">
+                                    Voir toutes les notifications
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
 
                 <!-- User Profile Section -->
                 <div class="flex items-center space-x-3 pl-4 border-l border-white/10">
