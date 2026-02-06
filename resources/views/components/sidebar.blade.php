@@ -21,6 +21,7 @@
                     ['name' => 'Equipe', 'route' => 'admin.team.index', 'icon' => 'users'],
                     ['name' => 'Catégories (types)', 'route' => 'admin.categories.index', 'icon' => 'tag'],
                     ['name' => 'Fonctionnalités', 'route' => 'admin.features.index', 'icon' => 'puzzle-piece'],
+                    ['name' => 'Fonct. de Base', 'route' => 'admin.core-features.index', 'icon' => 'star'],
                     ['name' => 'Catégories (fonct)', 'route' => 'admin.feature-categories.index', 'icon' => 'list-bullet'],
                     ['name' => 'Livrables', 'route' => 'admin.deliverables.index', 'icon' => 'rocket-launch'],
                 ],

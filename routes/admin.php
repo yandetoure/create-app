@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DeveloperController;
 use App\Http\Controllers\Admin\ProjectTypeController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\FeatureCategoryController;
+use App\Http\Controllers\Admin\CoreFeatureController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\CategoryController;
@@ -24,6 +25,9 @@ Route::resource('feature-categories', FeatureCategoryController::class);
 Route::resource('project-types', ProjectTypeController::class);
 Route::post('features/{feature}/toggle-base', [FeatureController::class, 'toggleBase'])->name('features.toggle-base');
 Route::resource('features', FeatureController::class);
+
+Route::post('core-features/{coreFeature}/toggle', [CoreFeatureController::class, 'toggleStatus'])->name('core-features.toggle');
+Route::resource('core-features', CoreFeatureController::class);
 
 Route::get('/deliverables', function () {
     return view('admin.deliverables.index');
