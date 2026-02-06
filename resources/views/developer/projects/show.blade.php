@@ -153,7 +153,8 @@
                                 @endif
                                 @if($project->configuration->specifications_content)
                                     <div class="text-gray-300 text-sm whitespace-pre-wrap">
-                                        {{ Str::limit($project->configuration->specifications_content, 500) }}</div>
+                                        {{ Str::limit($project->configuration->specifications_content, 500) }}
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -208,8 +209,8 @@
             </div>
         @endif
 
-        <!-- Tasks Section -->
-        <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8">
+        <!-- Tasks Section with Tabs -->
+        <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8" x-data="{ activeTab: 'all' }">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-2xl font-black">Tâches</h3>
                 <div class="text-sm text-gray-400">
@@ -217,9 +218,44 @@
                 </div>
             </div>
 
+            <!-- Tabs -->
+            <div class="flex flex-wrap gap-2 mb-6 border-b border-white/10 pb-4">
+                <button @click="activeTab = 'all'"
+                    :class="activeTab === 'all' ? 'bg-indigo-600 text-white' : 'bg-white/5 text-gray-400 hover:text-white'"
+                    class="px-4 py-2 rounded-xl text-sm font-bold transition">
+                    Toutes ({{ $project->tasks->count() }})
+                </button>
+                @php
+                    $categories = [
+                        'setup' => ['label' => 'Configuration', 'icon' => '⚙️'],
+                        'development' => ['label' => 'Développement', 'icon' => '💻'],
+                        'design' => ['label' => 'Design', 'icon' => '🎨'],
+                        'pages' => ['label' => 'Pages', 'icon' => '📄'],
+                        'deployment' => ['label' => 'Déploiement', 'icon' => '🚀'],
+                    ];
+                @endphp
+                @foreach($categories as $key => $category)
+                    @php
+                        $count = $project->tasks->where('category', $key)->count();
+                    @endphp
+                    @if($count > 0)
+                        <button @click="activeTab = '{{ $key }}'"
+                            :class="activeTab === '{{ $key }}' ? 'bg-indigo-600 text-white' : 'bg-white/5 text-gray-400 hover:text-white'"
+                            class="px-4 py-2 rounded-xl text-sm font-bold transition">
+                            {{ $category['icon'] }} {{ $category['label'] }} ({{ $count }})
+                        </button>
+                    @endif
+                @endforeach
+            </div>
+
+            <!-- Tasks List -->
             <div class="space-y-3">
                 @forelse($project->tasks as $task)
-                    <div class="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center justify-between">
+                    <div x-show="activeTab === 'all' || activeTab === '{{ $task->category }}'"
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 transform scale-95"
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center justify-between">
                         <div class="flex items-center space-x-4 flex-1">
                             <!-- Status Indicator -->
                             <div
@@ -227,10 +263,18 @@
                             </div>
 
                             <div class="flex-1">
-                                <h4
-                                    class="font-bold {{ $task->status === 'completed' ? 'text-gray-500 line-through' : 'text-white' }}">
-                                    {{ $task->name }}
-                                </h4>
+                                <div class="flex items-center space-x-2">
+                                    <h4
+                                        class="font-bold {{ $task->status === 'completed' ? 'text-gray-500 line-through' : 'text-white' }}">
+                                        {{ $task->name }}
+                                    </h4>
+                                    @if($task->category)
+                                        <span class="px-2 py-1 bg-white/5 text-gray-400 rounded text-xs">
+                                            {{ $categories[$task->category]['icon'] ?? '' }}
+                                            {{ $categories[$task->category]['label'] ?? ucfirst($task->category) }}
+                                        </span>
+                                    @endif
+                                </div>
                                 @if($task->description)
                                     <p class="text-gray-400 text-sm mt-1">{{ Str::limit($task->description, 100) }}</p>
                                 @endif
@@ -300,7 +344,8 @@
                                 </video>
                             @endif
                             <p class="text-sm text-white font-bold truncate">{{ $demo['original_name'] }}</p>
-                            <p class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($demo['uploaded_at'])->diffForHumans() }}</p>
+                            <p class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($demo['uploaded_at'])->diffForHumans() }}
+                            </p>
                         </div>
                     @endforeach
                 </div>
@@ -315,13 +360,15 @@
                     @foreach(array_reverse($project->developer_notes) as $note)
                         <div class="bg-white/5 border border-white/10 rounded-xl p-4">
                             <div class="flex items-start space-x-3">
-                                <div class="w-10 h-10 rounded-full bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-bold flex-shrink-0">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-bold flex-shrink-0">
                                     {{ substr($project->developer->name, 0, 1) }}
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-2">
                                         <p class="font-bold text-white">{{ $project->developer->name }}</p>
-                                        <p class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($note['created_at'])->diffForHumans() }}</p>
+                                        <p class="text-xs text-gray-400">
+                                            {{ \Carbon\Carbon::parse($note['created_at'])->diffForHumans() }}</p>
                                     </div>
                                     <p class="text-gray-300">{{ $note['comment'] }}</p>
                                 </div>

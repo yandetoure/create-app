@@ -22,6 +22,7 @@ class ProjectObserver
                 'project_id' => $project->id,
                 'name' => $template->name,
                 'description' => $template->description,
+                'category' => $template->category,
                 'status' => 'pending',
             ]);
         }
@@ -32,6 +33,7 @@ class ProjectObserver
                 'project_id' => $project->id,
                 'name' => $feature->name,
                 'description' => $feature->description,
+                'category' => 'development',
                 'status' => 'pending',
             ]);
         }
