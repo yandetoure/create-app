@@ -34,6 +34,9 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->prefix('lead')
                 ->name('lead.')
                 ->group(base_path('routes/lead.php'));
+
+            // Notifications routes (accessible to all authenticated users)
+            Route::middleware(['web'])->group(base_path('routes/notifications.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
