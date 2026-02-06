@@ -12,17 +12,21 @@ class ProjectObserver
      */
     public function created(Project $project): void
     {
-        // 1. Create a base task for the project type
-        Task::create([
-            'project_id' => $project->id,
-            'name' => "Initialisation: " . $project->projectType->name,
-            'description' => "Configuration de base pour un projet de type " . $project->projectType->name,
-            'status' => 'pending',
-        ]);
+        // Auto-generate tasks from templates
+        $templates = \App\Models\TaskTemplate::where('is_active', true)
+            ->orderBy('order')
+            ->get();
 
-        // 2. Create tasks for each feature selected
-// Note: In some cases features might be attached after creation.
-// For a simple implementation, we'll handle features here if they exist.
+        foreach ($templates as $template) {
+            Task::create([
+                'project_id' => $project->id,
+                'name' => $template->name,
+                'description' => $template->description,
+                'status' => 'pending',
+            ]);
+        }
+
+        // Also create tasks for selected features
         foreach ($project->features as $feature) {
             Task::create([
                 'project_id' => $project->id,
