@@ -11,20 +11,20 @@
     <style>
         :root {
             --primary-color:
-                {{ $project->configuration->primary_color ?? '#4f46e5' }}
+                {{ $project->configuration?->primary_color ?? '#4f46e5' }}
             ;
             --secondary-color:
-                {{ $project->configuration->secondary_color ?? '#10b981' }}
+                {{ $project->configuration?->secondary_color ?? '#10b981' }}
             ;
             --accent-color:
-                {{ $project->configuration->accent_color ?? '#f59e0b' }}
+                {{ $project->configuration?->accent_color ?? '#f59e0b' }}
             ;
 
             @php
-                $style = $project->configuration->design_style ?? 'modern';
+                $style = $project->configuration?->design_style ?? 'modern';
                 $radius = '1.5rem';
                 $shadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1)';
-                
+
                 if ($style === 'minimalist') {
                     $radius = '0px';
                     $shadow = 'none';
@@ -112,7 +112,7 @@
         <!-- Full Website View -->
         <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center border-b border-gray-100">
             <div class="flex items-center space-x-4">
-                @if($project->configuration->logo_path)
+                @if($project->configuration?->logo_path)
                     <img src="{{ asset('storage/' . $project->configuration->logo_path) }}" class="h-8 w-auto" alt="Logo">
                 @endif
                 <div class="font-bold text-2xl tracking-tighter">{{ $project->name }}</div>
@@ -120,7 +120,7 @@
             <div class="hidden md:flex space-x-8 font-medium">
                 <a href="{{ route('preview.show', ['slug' => $project->preview_slug, 'page' => 'home']) }}" 
                    class="{{ $page === 'home' ? 'text-primary' : 'hover:text-primary' }} transition">Accueil</a>
-                
+
                 @if($category === 'e-commerce')
                     <a href="{{ route('preview.show', ['slug' => $project->preview_slug, 'page' => 'shop']) }}" 
                        class="{{ $page === 'shop' ? 'text-primary' : 'hover:text-primary' }} transition">Boutique</a>
@@ -128,7 +128,7 @@
                     <a href="{{ route('preview.show', ['slug' => $project->preview_slug, 'page' => 'portfolio']) }}" 
                        class="{{ $page === 'portfolio' ? 'text-primary' : 'hover:text-primary' }} transition">Portfolio</a>
                 @endif
-                
+
                 <a href="{{ route('preview.show', ['slug' => $project->preview_slug, 'page' => 'contact']) }}" 
                    class="{{ $page === 'contact' ? 'text-primary' : 'hover:text-primary' }} transition">Contact</a>
             </div>
@@ -166,12 +166,12 @@
             <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div>
                     <div class="flex items-center space-x-4 mb-6">
-                        @if($project->configuration->logo_path)
+                        @if($project->configuration?->logo_path)
                             <img src="{{ asset('storage/' . $project->configuration->logo_path) }}" class="h-8 w-auto brightness-0 invert" alt="Logo">
                         @endif
                         <div class="font-bold text-2xl">{{ $project->name }}</div>
                     </div>
-                    @if($project->configuration->copywriting_brief)
+                    @if($project->configuration?->copywriting_brief)
                         <p class="text-gray-400 text-sm mb-4">{{ Str::limit($project->configuration->copywriting_brief, 100) }}</p>
                     @endif
                     <p class="text-gray-500 text-[10px] uppercase font-black tracking-widest">Généré par Digital Configurator</p>
@@ -183,15 +183,15 @@
                         <li>Secteur : {{ $project->projectType->category->name }}</li>
                     </ul>
                 </div>
-                @if($project->configuration->contact_email || $project->configuration->contact_phone)
-                <div>
-                    <h5 class="font-bold mb-6 text-primary">Contact</h5>
-                    <ul class="text-gray-400 text-sm space-y-4">
-                        @if($project->configuration->contact_email) <li>{{ $project->configuration->contact_email }}</li> @endif
-                        @if($project->configuration->contact_phone) <li>{{ $project->configuration->contact_phone }}</li> @endif
-                        @if($project->configuration->contact_address) <li>{{ $project->configuration->contact_address }}</li> @endif
-                    </ul>
-                </div>
+                @if($project->configuration?->contact_email || $project->configuration?->contact_phone)
+                    <div>
+                        <h5 class="font-bold mb-6 text-primary">Contact</h5>
+                        <ul class="text-gray-400 text-sm space-y-4">
+                            @if($project->configuration?->contact_email) <li>{{ $project->configuration->contact_email }}</li> @endif
+                            @if($project->configuration?->contact_phone) <li>{{ $project->configuration->contact_phone }}</li> @endif
+                            @if($project->configuration?->contact_address) <li>{{ $project->configuration->contact_address }}</li> @endif
+                        </ul>
+                    </div>
                 @endif
             </div>
         </footer>
