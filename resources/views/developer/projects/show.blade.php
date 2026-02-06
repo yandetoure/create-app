@@ -257,6 +257,81 @@
             </div>
         </div>
 
+        <!-- Deployment Links Section -->
+        @if($project->deployment_url || $project->staging_url)
+            <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8">
+                <h3 class="text-2xl font-black mb-6">🚀 Liens de Déploiement</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @if($project->deployment_url)
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                            <p class="text-xs text-gray-400 mb-2">Production</p>
+                            <a href="{{ $project->deployment_url }}" target="_blank"
+                                class="text-indigo-400 hover:text-indigo-300 font-bold break-all">
+                                {{ $project->deployment_url }}
+                            </a>
+                        </div>
+                    @endif
+                    @if($project->staging_url)
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                            <p class="text-xs text-gray-400 mb-2">Staging</p>
+                            <a href="{{ $project->staging_url }}" target="_blank"
+                                class="text-indigo-400 hover:text-indigo-300 font-bold break-all">
+                                {{ $project->staging_url }}
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
+
+        <!-- Demo Media Gallery -->
+        @if($project->demo_files && count($project->demo_files) > 0)
+            <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8">
+                <h3 class="text-2xl font-black mb-6">🎬 Démos</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach($project->demo_files as $demo)
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                            @if(str_contains($demo['type'], 'image'))
+                                <img src="{{ asset('storage/' . $demo['path']) }}" alt="{{ $demo['original_name'] }}"
+                                    class="w-full h-48 object-cover rounded-lg mb-3">
+                            @elseif(str_contains($demo['type'], 'video'))
+                                <video controls class="w-full h-48 rounded-lg mb-3">
+                                    <source src="{{ asset('storage/' . $demo['path']) }}" type="{{ $demo['type'] }}">
+                                </video>
+                            @endif
+                            <p class="text-sm text-white font-bold truncate">{{ $demo['original_name'] }}</p>
+                            <p class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($demo['uploaded_at'])->diffForHumans() }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        <!-- Developer Comments Timeline -->
+        @if($project->developer_notes && count($project->developer_notes) > 0)
+            <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8">
+                <h3 class="text-2xl font-black mb-6">💬 Commentaires du Développeur</h3>
+                <div class="space-y-4">
+                    @foreach(array_reverse($project->developer_notes) as $note)
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-indigo-600/20 flex items-center justify-center text-indigo-400 font-bold flex-shrink-0">
+                                    {{ substr($project->developer->name, 0, 1) }}
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <p class="font-bold text-white">{{ $project->developer->name }}</p>
+                                        <p class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($note['created_at'])->diffForHumans() }}</p>
+                                    </div>
+                                    <p class="text-gray-300">{{ $note['comment'] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         <!-- Deliverables Section -->
         @if($project->deliverables->count() > 0)
             <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8">
