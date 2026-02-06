@@ -21,12 +21,18 @@ class ProjectConfiguration extends Model
         'contact_address',
         'opening_hours',
         'form_types',
-        'additional_options'
+        'additional_options',
+        'specifications_file_path',
+        'specifications_content',
+        'reference_sites',
+        'resource_files',
     ];
 
     protected $casts = [
         'form_types' => 'array',
         'additional_options' => 'array',
+        'reference_sites' => 'array',
+        'resource_files' => 'array',
     ];
 
     public function project()

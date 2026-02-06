@@ -151,6 +151,179 @@
             </div>
         </div>
 
+        <!-- Cahier des Charges Section -->
+        <div class="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl backdrop-blur-md" x-data="{ mode: 'upload' }">
+            <h3 class="text-xl font-black italic mb-8 flex items-center space-x-3 text-purple-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span>Cahier des Charges</span>
+            </h3>
+
+            <!-- Tab Switcher -->
+            <div class="flex space-x-2 mb-6 p-1 bg-white/5 rounded-2xl border border-white/10 w-fit">
+                <button type="button" @click="mode = 'upload'"
+                    :class="mode === 'upload' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'"
+                    class="px-6 py-2 rounded-xl font-bold text-sm transition">
+                    📎 Uploader un fichier
+                </button>
+                <button type="button" @click="mode = 'write'"
+                    :class="mode === 'write' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-white'"
+                    class="px-6 py-2 rounded-xl font-bold text-sm transition">
+                    ✍️ Rédiger directement
+                </button>
+            </div>
+
+            <!-- Upload Mode -->
+            <div x-show="mode === 'upload'" class="space-y-4">
+                <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">
+                    Fichier PDF ou DOCX (Max 10MB)
+                </label>
+                <input type="file" name="specifications_file" accept=".pdf,.doc,.docx"
+                    class="w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-black file:bg-purple-600 file:text-white hover:file:bg-purple-700">
+                @if($configuration->specifications_file_path)
+                    <div class="mt-4 p-4 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span class="text-sm font-bold">Fichier actuel</span>
+                        </div>
+                        <a href="{{ asset('storage/' . $configuration->specifications_file_path) }}" target="_blank"
+                            class="px-4 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold hover:bg-purple-700 transition">
+                            Télécharger
+                        </a>
+                    </div>
+                @endif
+            </div>
+
+            <!-- Write Mode -->
+            <div x-show="mode === 'write'" class="space-y-4">
+                <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">
+                    Contenu du Cahier des Charges
+                </label>
+                <textarea name="specifications_content" rows="12"
+                    class="w-full bg-white/5 border border-white/10 rounded-3xl p-6 text-white font-medium focus:ring-2 focus:ring-purple-500 outline-none"
+                    placeholder="Décrivez en détail les objectifs, fonctionnalités attendues, contraintes techniques, délais, budget, etc.">{{ $configuration->specifications_content }}</textarea>
+                <p class="text-xs text-gray-500 italic">💡 Soyez aussi précis que possible pour aider l'équipe à comprendre votre vision</p>
+            </div>
+        </div>
+
+        <!-- Reference Sites Section -->
+        <div class="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl backdrop-blur-md" 
+             x-data="{ 
+                 sites: {{ json_encode($configuration->reference_sites ?? [['url' => '', 'description' => '']]) }},
+                 addSite() { this.sites.push({ url: '', description: '' }) },
+                 removeSite(index) { this.sites.splice(index, 1) }
+             }">
+            <h3 class="text-xl font-black italic mb-8 flex items-center space-x-3 text-cyan-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+                <span>Sites de Référence</span>
+            </h3>
+
+            <p class="text-sm text-gray-400 mb-6">Ajoutez des sites web qui vous inspirent ou qui correspondent au style que vous recherchez</p>
+
+            <div class="space-y-4">
+                <template x-for="(site, index) in sites" :key="index">
+                    <div class="p-6 bg-white/5 border border-white/10 rounded-2xl space-y-4">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1 space-y-4">
+                                <div>
+                                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 block mb-2">
+                                        URL du Site
+                                    </label>
+                                    <input type="url" x-model="site.url" :name="'reference_sites[' + index + '][url]'"
+                                        placeholder="https://exemple.com"
+                                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 block mb-2">
+                                        Description (optionnel)
+                                    </label>
+                                    <textarea x-model="site.description" :name="'reference_sites[' + index + '][description]'" rows="2"
+                                        placeholder="Ce que vous aimez dans ce site..."
+                                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white"></textarea>
+                                </div>
+                            </div>
+                            <button type="button" @click="removeSite(index)" x-show="sites.length > 1"
+                                class="ml-4 p-2 text-red-400 hover:bg-red-500/10 rounded-xl transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+
+                <button type="button" @click="addSite"
+                    class="w-full py-4 border-2 border-dashed border-white/20 rounded-2xl text-cyan-400 font-bold hover:bg-white/5 transition flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span>Ajouter un site de référence</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl backdrop-blur-md">
+            <h3 class="text-xl font-black italic mb-8 flex items-center space-x-3 text-orange-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <span>Ressources du Projet</span>
+            </h3>
+
+            <p class="text-sm text-gray-400 mb-6">Images, documents, maquettes, ou tout autre fichier utile (Max 5MB par fichier)</p>
+
+            <div class="space-y-6">
+                <div>
+                    <input type="file" name="resources[]" multiple accept="image/*,.pdf,.doc,.docx,.zip"
+                        class="w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-black file:bg-orange-600 file:text-white hover:file:bg-orange-700">
+                    <p class="text-xs text-gray-500 mt-2">Formats acceptés : Images, PDF, DOC, DOCX, ZIP</p>
+                </div>
+
+                @if($configuration->resource_files && count($configuration->resource_files) > 0)
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Fichiers actuels</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @foreach($configuration->resource_files as $resource)
+                                <div class="p-4 bg-white/5 border border-white/10 rounded-2xl flex items-center space-x-4">
+                                    @if(str_contains($resource['mime_type'] ?? '', 'image'))
+                                        <img src="{{ asset('storage/' . $resource['path']) }}" class="w-16 h-16 object-cover rounded-xl">
+                                    @else
+                                        <div class="w-16 h-16 bg-orange-600/20 rounded-xl flex items-center justify-center">
+                                            <svg class="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                    @endif
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-bold truncate">{{ $resource['original_name'] ?? 'Fichier' }}</p>
+                                        <p class="text-xs text-gray-500">{{ number_format(($resource['size'] ?? 0) / 1024, 2) }} KB</p>
+                                    </div>
+                                    <a href="{{ asset('storage/' . $resource['path']) }}" target="_blank"
+                                        class="p-2 bg-orange-600/20 text-orange-400 rounded-xl hover:bg-orange-600 hover:text-white transition">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+
         <!-- Submit Bar -->
         <div class="sticky bottom-8 z-50">
             <div
