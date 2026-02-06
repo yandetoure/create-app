@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $fillable = ['user_id', 'developer_id', 'project_manager_id', 'community_manager_id', 'project_type_id', 'name', 'slug', 'preview_slug', 'total_price', 'total_duration', 'status'];
+    protected $fillable = ['user_id', 'developer_id', 'project_manager_id', 'community_manager_id', 'project_type_id', 'name', 'slug', 'preview_slug', 'total_price', 'total_duration', 'status', 'deployment_url', 'staging_url', 'demo_files', 'developer_notes'];
+
+    protected $casts = [
+        'demo_files' => 'array',
+        'developer_notes' => 'array',
+    ];
 
     public function user()
     {

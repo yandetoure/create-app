@@ -75,6 +75,10 @@
                         </div>
 
                         <div class="flex items-center space-x-4">
+                            <a href="{{ route('developer.projects.edit', $project) }}"
+                                class="bg-yellow-600/10 text-yellow-400 px-6 py-3 rounded-2xl font-bold hover:bg-yellow-600 hover:text-white transition">
+                                Ajouter des infos
+                            </a>
                             <a href="{{ route('developer.projects.show', $project) }}"
                                 class="bg-indigo-600/10 text-indigo-400 px-6 py-3 rounded-2xl font-bold hover:bg-indigo-600 hover:text-white transition">
                                 Voir le projet

@@ -40,10 +40,85 @@ Route::get('/projects/{project}', function (\App\Models\Project $project) {
         abort(403);
     }
 
-    $project->load(['user', 'projectType', 'tasks', 'deliverables']);
+    $project->load(['user', 'projectType', 'tasks', 'deliverables', 'configuration']);
 
     return view('developer.projects.show', compact('project'));
 })->name('projects.show');
+
+Route::get('/projects/{project}/edit', function (\App\Models\Project $project) {
+    // Ensure developer owns this project
+    if ($project->developer_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $project->load(['user', 'projectType']);
+
+    return view('developer.projects.edit', compact('project'));
+})->name('projects.edit');
+
+Route::post('/projects/{project}/update-info', function (\App\Models\Project $project, \Illuminate\Http\Request $request) {
+    // Ensure developer owns this project
+    if ($project->developer_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $validated = $request->validate([
+        'deployment_url' => 'nullable|url',
+        'staging_url' => 'nullable|url',
+    ]);
+
+    $project->update($validated);
+
+    return redirect()->route('developer.projects.show', $project)->with('success', 'Informations de déploiement mises à jour !');
+})->name('projects.update-info');
+
+Route::post('/projects/{project}/upload-demo', function (\App\Models\Project $project, \Illuminate\Http\Request $request) {
+    // Ensure developer owns this project
+    if ($project->developer_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $request->validate([
+        'demo_file' => 'required|file|mimes:jpg,jpeg,png,gif,mp4,mov,avi|max:51200', // 50MB max
+    ]);
+
+    $file = $request->file('demo_file');
+    $path = $file->store('demos', 'public');
+
+    $demoFiles = $project->demo_files ?? [];
+    $demoFiles[] = [
+        'path' => $path,
+        'original_name' => $file->getClientOriginalName(),
+        'size' => $file->getSize(),
+        'type' => $file->getMimeType(),
+        'uploaded_at' => now()->toDateTimeString(),
+    ];
+
+    $project->update(['demo_files' => $demoFiles]);
+
+    return redirect()->route('developer.projects.show', $project)->with('success', 'Démo ajoutée avec succès !');
+})->name('projects.upload-demo');
+
+Route::post('/projects/{project}/add-comment', function (\App\Models\Project $project, \Illuminate\Http\Request $request) {
+    // Ensure developer owns this project
+    if ($project->developer_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $request->validate([
+        'comment' => 'required|string|max:1000',
+    ]);
+
+    $notes = $project->developer_notes ?? [];
+    $notes[] = [
+        'comment' => $request->comment,
+        'created_at' => now()->toDateTimeString(),
+    ];
+
+    $project->update(['developer_notes' => $notes]);
+
+    return redirect()->route('developer.projects.show', $project)->with('success', 'Commentaire ajouté !');
+})->name('projects.add-comment');
 
 // Tasks routes
 Route::get('/tasks', function () {
