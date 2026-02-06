@@ -64,24 +64,5 @@
         @endforeach
     </div>
 
-    <div class="pb-10 px-2">
-        <div class="bg-white/5 p-4 rounded-3xl border border-white/5 space-y-4">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-sm font-bold">
-                    {{ substr(Auth::user()->name, 0, 1) }}
-                </div>
-                <div class="overflow-hidden">
-                    <p class="text-sm font-bold truncate text-white">{{ Auth::user()->name }}</p>
-                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{{ $role }}</p>
-                </div>
-            </div>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit"
-                    class="w-full text-left px-4 py-2 text-xs font-bold text-red-400/80 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition">
-                    Déconnexion
-                </button>
-            </form>
-        </div>
-    </div>
+
 </nav>
