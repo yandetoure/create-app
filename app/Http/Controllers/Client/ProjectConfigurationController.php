@@ -66,6 +66,18 @@ class ProjectConfigurationController extends Controller
             $validated['specifications_file_path'] = $request->file('specifications_file')->store('projects/specifications', 'public');
         }
 
+        // Filter out empty reference sites (sites with no URL)
+        if (isset($validated['reference_sites']) && is_array($validated['reference_sites'])) {
+            $validated['reference_sites'] = array_values(array_filter($validated['reference_sites'], function ($site) {
+                return !empty($site['url']);
+            }));
+
+            // If no valid sites, set to null instead of empty array
+            if (empty($validated['reference_sites'])) {
+                $validated['reference_sites'] = null;
+            }
+        }
+
         // Handle multiple resource files upload
         if ($request->hasFile('resources')) {
             $resourcePaths = [];
