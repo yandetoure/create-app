@@ -41,13 +41,13 @@
                         </div>
 
                         <div class="flex items-center space-x-3">
-                            <a href="{{ route('projects.show', $project) }}"
+                            <a href="{{ route('client.projects.show', $project) }}"
                                 class="p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition text-sm font-bold text-gray-400">
-                                Détails
+                                👁️ Voir Détails
                             </a>
                             <a href="{{ route('client.projects.configure', $project) }}"
                                 class="p-4 bg-indigo-600 border border-indigo-500 rounded-2xl hover:bg-indigo-700 transition text-sm font-bold text-white shadow-xl shadow-indigo-600/20">
-                                Configurer
+                                ⚙️ Configurer
                             </a>
                         </div>
                     </div>

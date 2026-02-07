@@ -26,6 +26,14 @@ Route::resource('project-types', ProjectTypeController::class);
 Route::post('features/{feature}/toggle-base', [FeatureController::class, 'toggleBase'])->name('features.toggle-base');
 Route::resource('features', FeatureController::class);
 
+// Template & Component Management
+Route::resource('templates', \App\Http\Controllers\Admin\TemplateController::class);
+Route::resource('components', \App\Http\Controllers\Admin\ComponentController::class);
+Route::post('templates/{template}/toggle-active', [\App\Http\Controllers\Admin\TemplateController::class, 'toggleActive'])->name('templates.toggle-active');
+Route::post('templates/{template}/assign-component', [\App\Http\Controllers\Admin\TemplateController::class, 'assignComponent'])->name('templates.assign-component');
+Route::delete('templates/{template}/remove-component/{component}', [\App\Http\Controllers\Admin\TemplateController::class, 'removeComponent'])->name('templates.remove-component');
+
+
 Route::post('core-features/{coreFeature}/toggle', [CoreFeatureController::class, 'toggleStatus'])->name('core-features.toggle');
 Route::resource('core-features', CoreFeatureController::class);
 

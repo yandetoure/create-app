@@ -70,4 +70,14 @@ class Project extends Model
     {
         return $this->hasOne(ProjectConfiguration::class);
     }
+
+    public function template()
+    {
+        return $this->belongsTo(Template::class);
+    }
+
+    public function templateCustomization()
+    {
+        return $this->hasOne(ProjectTemplateCustomization::class);
+    }
 }

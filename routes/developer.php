@@ -142,11 +142,18 @@ Route::get('/tasks', function () {
 // Deliverables routes
 Route::get('/deliverables', function () {
     $developer = auth()->user();
+
+    // Get deliverables
     $deliverables = \App\Models\Deliverable::whereHas('project', function ($query) use ($developer) {
         $query->where('developer_id', $developer->id);
     })->with(['project'])->get();
 
-    return view('developer.deliverables.index', compact('deliverables'));
+    // Get projects with deployment URLs
+    $projects = \App\Models\Project::where('developer_id', $developer->id)
+        ->whereNotNull('deployment_url')
+        ->get();
+
+    return view('developer.deliverables.index', compact('deliverables', 'projects'));
 })->name('deliverables.index');
 
 // Task update route
