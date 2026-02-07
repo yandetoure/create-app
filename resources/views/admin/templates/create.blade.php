@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-dashboard-layout>
     <x-slot name="title">Créer un Template</x-slot>
 
     <div class="space-y-8 max-w-4xl">
@@ -137,4 +137,4 @@
             </div>
         </form>
     </div>
-</x-admin-layout>
+</x-dashboard-layout>

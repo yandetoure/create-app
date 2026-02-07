@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-dashboard-layout>
     <x-slot name="title">Templates</x-slot>
 
     <div class="space-y-8">
@@ -136,4 +136,4 @@
             </div>
         @endif
     </div>
-</x-admin-layout>
+</x-dashboard-layout>

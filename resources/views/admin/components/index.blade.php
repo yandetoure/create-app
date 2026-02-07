@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-dashboard-layout>
     <x-slot name="title">Composants</x-slot>
 
     <div class="space-y-8">
@@ -116,4 +116,4 @@
             </div>
         @endif
     </div>
-</x-admin-layout>
+</x-dashboard-layout>

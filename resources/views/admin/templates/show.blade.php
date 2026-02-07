@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-dashboard-layout>
     <x-slot name="title">{{ $template->name }}</x-slot>
 
     <div class="space-y-8">
@@ -167,4 +167,4 @@
             </div>
         </div>
     </div>
-</x-admin-layout>
+</x-dashboard-layout>
