@@ -29,6 +29,32 @@
             @endif
         </div>
 
+        <!-- Live Preview -->
+        <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-black flex items-center space-x-2">
+                    <span>👁️</span>
+                    <span>Aperçu en Direct</span>
+                </h3>
+                <a href="{{ route('templates.live-preview', $template) }}" target="_blank"
+                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-xl font-bold transition text-sm">
+                    🔍 Voir en Plein Écran
+                </a>
+            </div>
+            
+            <div class="bg-black/40 rounded-2xl overflow-hidden border border-white/10">
+                <iframe 
+                    src="{{ route('templates.live-preview', $template) }}" 
+                    class="w-full h-[600px] bg-white"
+                    frameborder="0"
+                    loading="lazy"
+                ></iframe>
+            </div>
+            <p class="text-xs text-gray-500 mt-4 text-center">
+                💡 Cliquez sur "Voir en Plein Écran" pour une meilleure expérience
+            </p>
+        </div>
+
         <!-- Components List -->
         @if($template->components->count() > 0)
             <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8">

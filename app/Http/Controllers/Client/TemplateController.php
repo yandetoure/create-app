@@ -87,4 +87,18 @@ class TemplateController extends Controller
             ->route('client.projects.show', $project)
             ->with('success', 'Template sélectionné avec succès !');
     }
+
+    /**
+     * Show live preview of template (public, no auth required)
+     */
+    public function livePreview(Template $template)
+    {
+        $template->load([
+            'components' => function ($query) {
+                $query->orderBy('template_components.sort_order');
+            }
+        ]);
+
+        return view('templates.live-preview', compact('template'));
+    }
 }

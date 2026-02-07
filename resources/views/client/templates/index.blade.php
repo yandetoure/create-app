@@ -75,7 +75,7 @@
                             <div class="flex space-x-3">
                                 <a href="{{ route('client.projects.templates.preview', [$project, $template]) }}"
                                     class="flex-1 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl font-bold text-center transition">
-                                    Voir détails
+                                    👁️ Aperçu
                                 </a>
                                 @if($project->template_id !== $template->id)
                                     <form action="{{ route('client.projects.templates.select', $project) }}" method="POST"
