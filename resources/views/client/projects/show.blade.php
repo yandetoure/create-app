@@ -176,11 +176,11 @@
                             $isVideo = in_array(strtolower($extension), ['mp4', 'mov', 'avi', 'webm']);
                         @endphp
                         <div class="bg-black/20 rounded-2xl overflow-hidden hover:scale-105 transition">
-                            @if($isImage)
+                            @if($isImage && is_string($demoFile))
                                 <img src="{{ asset('storage/' . $demoFile) }}" alt="Demo"
                                     class="w-full h-48 object-cover cursor-pointer"
                                     onclick="window.open('{{ asset('storage/' . $demoFile) }}', '_blank')">
-                            @elseif($isVideo)
+                            @elseif($isVideo && is_string($demoFile))
                                 <video controls class="w-full h-48 object-cover">
                                     <source src="{{ asset('storage/' . $demoFile) }}" type="video/{{ $extension }}">
                                 </video>
@@ -197,14 +197,16 @@
                                 </div>
                             @endif
                             <div class="p-4">
-                                <a href="{{ asset('storage/' . $demoFile) }}" target="_blank" download
-                                    class="text-xs text-indigo-400 hover:text-indigo-300 flex items-center space-x-1">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                    </svg>
-                                    <span>Télécharger</span>
-                                </a>
+                                @if(is_string($demoFile))
+                                    <a href="{{ asset('storage/' . $demoFile) }}" target="_blank" download
+                                        class="text-xs text-indigo-400 hover:text-indigo-300 flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                        </svg>
+                                        <span>Télécharger</span>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     @endforeach
@@ -315,7 +317,7 @@
                                 </div>
                                 <span
                                     class="px-3 py-1 rounded-lg text-xs font-bold
-                                                        {{ $task->status === 'completed' ? 'bg-green-500/20 text-green-400' :
+                                                                    {{ $task->status === 'completed' ? 'bg-green-500/20 text-green-400' :
                         ($task->status === 'in_progress' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-500/20 text-gray-400') }}">
                                     {{ $task->status === 'completed' ? '✓ Terminé' :
                         ($task->status === 'in_progress' ? '⚡ En cours' : '⏸ En attente') }}
