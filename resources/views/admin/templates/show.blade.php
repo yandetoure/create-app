@@ -1,6 +1,4 @@
 <x-dashboard-layout>
-    <x-slot name="title">{{ $template->name }}</x-slot>
-
     <div class="space-y-8">
         <!-- Back & Actions -->
         <div class="flex items-center justify-between">

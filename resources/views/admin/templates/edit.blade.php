@@ -1,6 +1,4 @@
 <x-dashboard-layout>
-    <x-slot name="title">Modifier {{ $template->name }}</x-slot>
-
     <div class="space-y-8 max-w-4xl">
         <!-- Back Button -->
         <a href="{{ route('admin.templates.show', $template) }}"

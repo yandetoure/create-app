@@ -63,13 +63,13 @@ class ComponentController extends Controller
     public function show(Component $component)
     {
         $component->load('templates');
-        return view('admin.components.show', compact('component'));
+        return view('admin.components.show', ['comp' => $component]);
     }
 
     public function edit(Component $component)
     {
         $types = Component::getTypes();
-        return view('admin.components.edit', compact('component', 'types'));
+        return view('admin.components.edit', ['comp' => $component, 'types' => $types]);
     }
 
     public function update(Request $request, Component $component)
