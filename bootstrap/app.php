@@ -40,6 +40,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
             // Comments routes (accessible to all authenticated users)
             Route::middleware(['web'])->group(base_path('routes/comments.php'));
+
+            // Time tracking routes (accessible to all authenticated users)
+            Route::middleware(['web'])->group(base_path('routes/time-tracking.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
