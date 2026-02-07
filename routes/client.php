@@ -15,7 +15,8 @@ Route::get('/projects/{project}', function ($projectId) {
         'tasks',
         'deliverables',
         'comments.user',
-        'comments.replies.user'
+        'comments.replies.user',
+        'template.components'
     ])->findOrFail($projectId);
 
     // Verify ownership
@@ -28,3 +29,8 @@ Route::get('/projects/{project}', function ($projectId) {
 
 Route::get('/projects/{project}/configure', [ProjectConfigurationController::class, 'edit'])->name('projects.configure');
 Route::post('/projects/{project}/configure', [ProjectConfigurationController::class, 'update'])->name('projects.configure.update');
+
+// Template selection routes
+Route::get('/projects/{project}/templates', [\App\Http\Controllers\Client\TemplateController::class, 'index'])->name('projects.templates.index');
+Route::get('/projects/{project}/templates/{template}/preview', [\App\Http\Controllers\Client\TemplateController::class, 'preview'])->name('projects.templates.preview');
+Route::post('/projects/{project}/templates/select', [\App\Http\Controllers\Client\TemplateController::class, 'select'])->name('projects.templates.select');

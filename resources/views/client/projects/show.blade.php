@@ -55,6 +55,63 @@
             </div>
         </div>
 
+
+        <!-- Template Section -->
+        @if($project->template)
+            <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-black flex items-center space-x-2">
+                        <span>🎨</span>
+                        <span>Template Sélectionné</span>
+                    </h3>
+                    <a href="{{ route('client.projects.templates.index', $project) }}"
+                        class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-xl font-bold transition text-sm">
+                        Changer de Template
+                    </a>
+                </div>
+
+                <div class="bg-black/20 rounded-2xl p-6 flex items-start space-x-6">
+                    @if($project->template->preview_image)
+                        <img src="{{ asset('storage/' . $project->template->preview_image) }}"
+                            alt="{{ $project->template->name }}"
+                            class="w-32 h-32 object-cover rounded-xl border border-white/10">
+                    @else
+                        <div
+                            class="w-32 h-32 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-xl flex items-center justify-center">
+                            <span class="text-4xl">🎨</span>
+                        </div>
+                    @endif
+
+                    <div class="flex-1">
+                        <h4 class="text-xl font-bold mb-2">{{ $project->template->name }}</h4>
+                        <p class="text-gray-400 text-sm mb-3">{{ $project->template->description }}</p>
+                        <div class="flex items-center space-x-3 text-xs">
+                            <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-lg font-bold">
+                                {{ ucfirst($project->template->category) }}
+                            </span>
+                            <span class="text-gray-500">
+                                {{ $project->template->components->count() }} composants
+                            </span>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('client.projects.templates.preview', [$project, $project->template]) }}"
+                        class="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl font-bold transition text-sm">
+                        Voir Détails
+                    </a>
+                </div>
+            </div>
+        @else
+            <div class="bg-purple-500/10 border border-purple-500/20 rounded-[2rem] p-8 text-center">
+                <span class="text-6xl mb-4 block">🎨</span>
+                <h3 class="text-2xl font-black mb-2">Aucun Template Sélectionné</h3>
+                <p class="text-gray-400 mb-6">Choisissez un template pour définir le design de votre projet</p>
+                <a href="{{ route('client.projects.templates.index', $project) }}"
+                    class="inline-block px-8 py-4 bg-purple-600 hover:bg-purple-700 rounded-2xl font-black transition">
+                    Parcourir les Templates
+                </a>
+            </div>
+        @endif
         <!-- Deployment URLs -->
         @if($project->deployment_url || $project->staging_url)
             <div class="bg-white/5 border border-white/10 rounded-[2rem] p-8">
@@ -114,7 +171,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($project->demo_files as $demoFile)
                         @php
-                            $extension = pathinfo($demoFile, PATHINFO_EXTENSION);
+                            $extension = is_string($demoFile) ? pathinfo($demoFile, PATHINFO_EXTENSION) : '';
                             $isImage = in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp']);
                             $isVideo = in_array(strtolower($extension), ['mp4', 'mov', 'avi', 'webm']);
                         @endphp
@@ -258,7 +315,7 @@
                                 </div>
                                 <span
                                     class="px-3 py-1 rounded-lg text-xs font-bold
-                                            {{ $task->status === 'completed' ? 'bg-green-500/20 text-green-400' :
+                                                        {{ $task->status === 'completed' ? 'bg-green-500/20 text-green-400' :
                         ($task->status === 'in_progress' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-500/20 text-gray-400') }}">
                                     {{ $task->status === 'completed' ? '✓ Terminé' :
                         ($task->status === 'in_progress' ? '⚡ En cours' : '⏸ En attente') }}
