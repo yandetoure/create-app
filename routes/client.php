@@ -35,5 +35,7 @@ Route::get('/projects/{project}/templates', [\App\Http\Controllers\Client\Templa
 Route::get('/projects/{project}/templates/{template}/preview', [\App\Http\Controllers\Client\TemplateController::class, 'preview'])->name('projects.templates.preview');
 Route::post('/projects/{project}/templates/select', [\App\Http\Controllers\Client\TemplateController::class, 'select'])->name('projects.templates.select');
 
-// Public template live preview (no auth)
-Route::get('/templates/{template}/live-preview', [\App\Http\Controllers\Client\TemplateController::class, 'livePreview'])->name('templates.live-preview')->withoutMiddleware(['auth', 'role:client']);
+// Public template live preview (no auth required)
+Route::get('/templates/{template}/live-preview', [\App\Http\Controllers\Client\TemplateController::class, 'livePreview'])
+    ->name('templates.live-preview')
+    ->withoutMiddleware(['auth', 'role:client']);

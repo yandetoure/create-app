@@ -36,7 +36,7 @@
                     <span>👁️</span>
                     <span>Aperçu en Direct</span>
                 </h3>
-                <a href="{{ route('templates.live-preview', $template) }}" target="_blank"
+                <a href="{{ route('client.templates.live-preview', $template) }}" target="_blank"
                     class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-xl font-bold transition text-sm">
                     🔍 Voir en Plein Écran
                 </a>
@@ -44,7 +44,7 @@
             
             <div class="bg-black/40 rounded-2xl overflow-hidden border border-white/10">
                 <iframe 
-                    src="{{ route('templates.live-preview', $template) }}" 
+                    src="{{ route('client.templates.live-preview', $template) }}" 
                     class="w-full h-[600px] bg-white"
                     frameborder="0"
                     loading="lazy"
